@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
+  <title>deck.gl Example</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.49.0/mapbox-gl.js'></script>
+  <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.49.0/mapbox-gl.css' rel='stylesheet' />
+
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
+
+  <link href="https://fonts.googleapis.com/css?family=Scope+One" rel="stylesheet">
+
+  <style>
+  body {margin: 0; width: 100vw; height: 100vh; overflow: hidden; background-color: rgb(20, 20, 20);}
+  .tooltip {pointer-events: none; position: absolute; z-index: 9; font-size: 12px; padding: 8px; background: #000; color: #fff; min-width: 160px; max-height: 240px; overflow-y: hidden;}
+  #slogan-area {height: 120px}
+  /*#body-vis {height: calc(100% - 200px);}*/
+  .left {height: calc(100vh - 120px)}
+  .bottom-left {height: 100%}
+  .bottom-middle {height: 100%}
+  .top-left {height: 60%}
+  .right {height: 100%}
+  .app {}
+  #video-panel {
+    height: 40%;
+    border: solid 2px;
+  }
+  .h1, .h2, .h3, .h4, .h5, .h6, h1, h2, h3, h4, h5, h6 {font-family: 'Scope One', serif;
+    font-weight: 400;
+    font-style: normal;
+    font-stretch: normal;}
+  #slogan-area h3 {
+    font-family: 'Scope One', serif;
+    font-weight: 400;
+    font-style: normal;
+    font-stretch: normal;
+    color: #FFF;
+    line-height: 1.2;
+    text-align: left;
+    font-size: 1.5em;
+    margin: 0 40% 0 0;
+    width: 100%;
+    padding: 20px 0 0 0;
+  }
+  #slogan-area p {
+    font-family: 'Scope One', serif;
+    font-weight: 400;
+    font-style: normal;
+    font-stretch: normal;
+    color: #999;
+    line-height: 1.2;
+    text-align: left;
+    font-size: 0.7em;
+    width: 100%;
+    margin: 0 40% 0 0;
+  }
+  .mapboxgl-ctrl-bottom-left { display: none; }
+  .mapboxgl-ctrl-bottom-right { display: none; }
+  
+  .city-summary__score {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 5px;
+    border-bottom: 1px solid #888;
+    padding-bottom: 5px;
+  }
+
+  .city-summary__name{
+    font-size: 1.2em;
+    color: #CCC;
+  }
+  .city-summary__score--title {
+    color: #AAA;
+    font-size: 0.7em;
+    line-height: 1;
+  }
+  .city-summary__score--tabular {
+    color: white;
+    font-size: 1em;
+    line-height: 1;
+  }
+  .city-summary__wrapper {
+    margin-bottom: 20px;
+  }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="row" id="slogan-area">
+      <h3>Using Drone Video Imagery to Measure Pedestrian Flow</h3>
+      <p>Developed by Zhoutong Wang<br/>We took video footage of a small area near Harvard campus, and performed pedestrian detection, counting and classification. Related results of computer vision to a street network segments dataset, and developed method to automate spatial join. </p>
+      <div></div>
+    </div>
+    <div class="row" id="body-vis">
+      <div class="col-9 left">
+        <div class="row top-left">
+          <div class="col-12"><div id="app"></div></div>
+        </div>
+        <div class="row" id="video-panel" >
+          <div class="col col-sm-6 bottom-left">
+            <video width="320" height="240" autoplay>
+              <source src="./data/input.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+            </video>
+          </div>
+          <div class="col col-sm-6 bottom-middle">
+            <video width="320" height="240" autoplay>
+              <source src="./data/output.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+            </video>
+          </div>
+        </div>
+      </div>
+      <div class="col-3 right">
+        <div class="city-summary__wrapper"><h2 class="city-summary__name">Adult</h2><div class="city-summary__score"><div class="city-summary__score--title">Percentage</div><div class="city-summary__score--tabular"><svg width="14px" height="14px"><circle r="7" cx="7" cy="7" fill="rgb(74, 232, 112)"></circle></svg> 25.3%</div></div><div class="city-summary__score"><div class="city-summary__score--title">Total Count</div><div class="city-summary__score--tabular">108</div></div></div>
+
+        <div class="city-summary__wrapper"><h2 class="city-summary__name">Child</h2><div class="city-summary__score"><div class="city-summary__score--title">Percentage</div><div class="city-summary__score--tabular"><svg width="14px" height="14px"><circle r="7" cx="7" cy="7" fill="rgb(232, 70, 112)"></circle></svg> 15.7%</div></div><div class="city-summary__score"><div class="city-summary__score--title">Total Count</div><div class="city-summary__score--tabular">108</div></div></div>
+
+        <div class="city-summary__wrapper"><h2 class="city-summary__name">Adult</h2><div class="city-summary__score"><div class="city-summary__score--title">Percentage</div><div class="city-summary__score--tabular"><svg width="14px" height="14px"><circle r="7" cx="7" cy="7" fill="rgb(232, 112, 74)"></circle></svg> 25.3%</div></div><div class="city-summary__score"><div class="city-summary__score--title">Total Count</div><div class="city-summary__score--tabular">108</div></div></div>
+
+        <div class="city-summary__wrapper"><h2 class="city-summary__name">Adult</h2><div class="city-summary__score"><div class="city-summary__score--title">Percentage</div><div class="city-summary__score--tabular"><svg width="14px" height="14px"><circle r="7" cx="7" cy="7" fill="rgb(40, 100, 200)"></circle></svg> 25.3%</div></div><div class="city-summary__score"><div class="city-summary__score--title">Total Count</div><div class="city-summary__score--tabular">108</div></div></div>
+      </div>
+    </div>
+  </div>
+</body>
+<script type="text/javascript" src="app.js"></script>
+<script type="text/javascript">
+  App.renderToDOM(document.getElementById('app'));
+</script>
+</html>
