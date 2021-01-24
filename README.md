@@ -27,10 +27,8 @@ tree1
 
     [13, [7], [8, [99], [16, [77]], [42]]]
 
-
-
-### Question 1
 ```python
+## Question 1
 def tree_max(tree):
     """Walk a tree, returning the maximum value in the 
        (assumed non-empty) tree.
@@ -48,8 +46,8 @@ tree_max(tree1)
 
 ```
 
-### Question 2
 ```python
+## Question 2
 def depth_tree(tree):
     """ Walk a tree, returning the depth of the tree
     >>> depth_tree([13, [7], [8, [99], [16, [77]], [42]]])
@@ -63,67 +61,6 @@ def depth_tree(tree):
 # Test your code. The answer is 4
 depth_tree(tree1)
 ```
-
-### Question 3
-Given two tables created and populated as follows:
-
-```sql
-CREATE TABLE dbo.envelope(id int, user_id int);
-CREATE TABLE dbo.docs(idnum int, pageseq int, doctext varchar(100));
-
-INSERT INTO dbo.envelope VALUES
-  (1,1),
-  (2,2),
-  (3,3);
-
-INSERT INTO dbo.docs(idnum,pageseq) VALUES
-  (1,5),
-  (2,6),
-  (null,0);
-```
-What will the result be from the following query:
-```sql
-UPDATE docs SET doctext=pageseq FROM docs INNER JOIN envelope ON envelope.id=docs.idnum
-WHERE EXISTS (
-  SELECT 1 FROM dbo.docs
-  WHERE id=envelope.id
-);
-Explain your answer.
-```
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 ## Card Game (Python Class)
 
@@ -171,4 +108,32 @@ c2 = Card(6,'D')
 c1 > c2
 # reutnr true
 c1 < c2
+```
+
+
+## SQL Test
+Given two tables created and populated as follows:
+
+```sql
+CREATE TABLE dbo.envelope(id int, user_id int);
+CREATE TABLE dbo.docs(idnum int, pageseq int, doctext varchar(100));
+
+INSERT INTO dbo.envelope VALUES
+  (1,1),
+  (2,2),
+  (3,3);
+
+INSERT INTO dbo.docs(idnum,pageseq) VALUES
+  (1,5),
+  (2,6),
+  (null,0);
+```
+What will the result be from the following query:
+```sql
+UPDATE docs SET doctext=pageseq FROM docs INNER JOIN envelope ON envelope.id=docs.idnum
+WHERE EXISTS (
+  SELECT 1 FROM dbo.docs
+  WHERE id=envelope.id
+);
+Explain your answer.
 ```
